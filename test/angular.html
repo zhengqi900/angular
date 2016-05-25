@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script type="text/javascript" src="./jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+</head>
+
+
+<body ng-init="num1=0;num2=0;">
+<h3>例子0：</h3>
+<runoob-directive></runoob-directive>
+<div runoob-directive></div>
+<div class="runoob-directive"></div>
+<!-- 指令: runoob-directive -->
+<h3>例子1:</h3>
+<label>价格</label><input type="number" ng-model="num1">
+<label>数量</label><input type="number" ng-model="num2"> 
+<p>总额{{ num1 * num2 }}</p>
+<hr>
+<h3>例子2：</h3>
+<div ng-init="names1=['Jani','Hege','Kai']">
+  <p>使用 ng-repeat 来循环数组</p>
+  <ul>
+    <li ng-repeat="x in names1">
+      {{ x }}
+    </li>
+  </ul>
+</div>
+
+<div ng-init="names=[
+{name:'Jani',country:'Norway'},
+{name:'Hege',country:'Sweden'},
+{name:'Kai',country:'Denmark'}]">
+
+<p>循环对象：</p>
+<ul>
+  <li ng-repeat="x  in names">
+    {{ x.name + ', ' + x.country }}
+  </li>
+</ul>
+
+</div>
+<hr>
+<h3>例子3：</h3>
+<div ng-controller="btn" >
+    <input type="button" ng-show="showStatus" ng-click="count=count+1" value="点击"> 
+    <p ng-show="showStatus">{{ count }}</p>
+    <p>&nbsp;</p>   
+    <input type="button" ng-click="toggle()" value="显示/隐藏"><br>
+</div>
+<hr>
+<h3>例子：</h3>
+<div ng-controller="personCtrl">
+    <p>姓名为 {{ lastName | uppercase }}</p>
+    <p>姓名为 {{ lastName | lowercase }}</p>
+    <input type="number" ng-model="quantity">
+    <input type="number" ng-model="price">
+    <p>总价 = {{ (quantity * price) | currency }}</p>
+    <div>
+        <ul>
+          <li ng-repeat="x in names | orderBy:'country'">
+            {{ x.name + ', ' + x.country }}
+          </li>
+        </ul>
+    <div> 
+    <div>
+        <p><input type="text" ng-model="test"></p>
+
+        <ul>
+          <li ng-repeat="x in names | filter:test | orderBy:'country'">
+            {{ (x.name | uppercase) + ', ' + x.country }}
+          </li>
+        </ul>
+    </div>      
+</div>
+<h3>例子4:</h3>
+<div id="ctrl-exmpl" ng-controller="SettingsController2">
+  <label>Name: <input type="text" ng-model="name"/></label>
+  <button ng-click="greet()">greet</button><br/>
+  Contact:
+  <ul>
+    <li ng-repeat="contact in contacts">
+      <select ng-model="contact.type" id="select_{{$index}}">
+         <option>phone</option>
+         <option>email</option>
+      </select>
+      <input type="text" ng-model="contact.value" aria-labelledby="select_{{$index}}" />
+      <button ng-click="clearContact(contact)">clear</button>
+      <button ng-click="removeContact(contact)">X</button>
+    </li>
+    <li>[ <button ng-click="addContact()">add</button> ]</li>
+ </ul>
+</div>
+<hr>
+<h3>例子5：</h3>
+<div ng-controller="HelloController">
+    <p>双向绑定</p>
+    <input ng-model="greeting">
+    <p>Hello {{greeting || "World"}}</p>
+    <button ng-click="init()">重置</button>
+</div>
+<div ng-controller="formCtrl">
+  <form novalidate>
+    First Name:<br>
+    <input type="text" ng-model="user.firstName"><br>
+    Last Name:<br>
+    <input type="text" ng-model="user.lastName">
+    <br><br>
+    <button ng-click="reset()">RESET</button>
+  </form>
+  <p>form = {{ user }}</p>
+  <p>master = {{ master }}</p>
+<!--   <p ng-bind="user.firstName"></p>
+<p ng-bind="user.lastName"></p> -->
+</div>
+<hr>
+<h3>例子:</h3>
+<form ng-controller="validateCtrl" name="myForm" novalidate> 
+<!-- novalidate 禁用浏览器默认验证 -->
+<p>用户名:<br>
+  <input type="text" name="user" ng-model="user" required>
+  <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+  <span ng-show="myForm.user.$error.required">用户名是必须的。</span>
+  </span>
+</p>
+
+<p>邮箱:<br>
+  <input type="email" name="email" ng-model="email" required>
+  <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+  <span ng-show="myForm.email.$error.required">邮箱是必须的。</span>
+  <span ng-show="myForm.email.$error.email">非法的邮箱。</span>
+  </span>
+</p>
+
+<p>
+  <input type="submit"
+  ng-disabled="myForm.user.$dirty && myForm.user.$invalid ||
+  myForm.email.$dirty && myForm.email.$invalid">
+</p>
+
+</form>
+<!-- <h3>不是例子：</h3>
+<form name="myForm" ng-controller="CancelUpdateCtrl" ng-model-options="{ updateOn: 'blur' }">
+    <p>With $cancelUpdate()</p>
+    <input name="myInput1" ng-model="myValue1" ng-keydown="resetWithCancel($event)"><br/>
+    myValue1: "{{ myValue1 }}"
+
+    <p>Without $cancelUpdate()</p>
+    <input name="myInput2" ng-model="myValue2" ng-keydown="resetWithoutCancel($event)"><br/>
+    myValue2: "{{ myValue2 }}"
+</form> -->
+</body>
+<script type="text/javascript">
+    //创建模块
+    var app = angular.module("myApp",[]);
+    // 一
+    app.directive("runoobDirective", function() {
+    return {
+        // E 只限元素名使用 A 只限属性使用 C 只限类名使用 M 只限注释使用  AE没有限制   CM需要指定方式来使用  M使用后不可见需设置replace为true
+        // restrict : "A",
+        // replace : true,
+        template : "<h1>自定义指令!</h1>"
+    };
+    });
+
+    app.controller("btn",function($scope) {
+         $scope.count = 0;
+         $scope.showStatus = true;
+         $scope.toggle = function(){
+            $scope.showStatus = !$scope.showStatus;
+         }
+         // $scope.num = function() {
+         //    ++ $scope.count;
+         //    if($scope.count > 10){
+         //        alert("不能大于10");
+         //        $scope.count = 10;
+         //        return;
+         //    }
+         // }
+    });
+    // 二
+    app.controller('personCtrl',function($scope){
+        $scope.lastName = "aBc";
+        $scope.names = [
+            {name : "Tony" ,country : "China"},
+            {name : "Mary" ,country : "America"}
+        ]
+    });
+
+    app.controller('SettingsController2', ['$scope', SettingsController2]);
+
+    function SettingsController2($scope) {
+        $scope.name = "John Smith";
+        $scope.contacts = [
+            {type:'phone', value:'408 555 1212'},
+            {type:'email', value:'john.smith@example.org'} 
+        ];
+
+        $scope.greet = function() {
+            alert($scope.name);
+        };
+
+        $scope.addContact = function() {
+            $scope.contacts.push({type:'email', value:'yourname@example.org'});
+        };
+
+        $scope.removeContact = function(contactToRemove) {
+            var index = $scope.contacts.indexOf(contactToRemove);
+            $scope.contacts.splice(index, 1);
+        };
+
+        $scope.clearContact = function(contact) {
+            contact.type = 'phone';
+            contact.value = '';
+        };
+    };
+
+
+
+    app.controller("HelloController",['$scope',HelloController]);
+
+    function HelloController($scope){
+        $scope.init = function() {
+            $scope.greeting = "World";
+        }
+    };
+
+    app.controller('formCtrl', function($scope) {
+        $scope.master = {firstName:"John", lastName:"Doe"};
+        $scope.reset = function() {
+            $scope.user = angular.copy($scope.master);
+        };
+        $scope.reset();
+    });    
+
+    app.controller('validateCtrl', function($scope) {
+        $scope.user = 'John Doe';
+        $scope.email = 'john.doe@gmail.com';
+    });
+    // app.controller("CancelUpdateCtrl",function($scope){
+    //     $scope.resetWithCancel = function (e) {
+    //         if (e.keyCode == 27) {
+    //           $scope.myForm.myInput1.$cancelUpdate();
+    //           $scope.myValue1 = '';
+    //         }
+    //     };
+    //     $scope.resetWithoutCancel = function (e) {
+    //         if (e.keyCode == 27) {
+    //           $scope.myValue2 = '';
+    //         }
+    //     };
+    // }); 
+</script>
+<script type="text/javascript">
+    var myInput1 = $("input[name=myInput1]");
+    var myInput2 = $("input[name=myInput2]");
+    $("input[name=myInput1],input[name=myInput2]").on("blur",function(){   
+        console.log(myInput1.val());
+        console.log(myInput2.val());
+    });
+</script>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src='jquery-1.11.3.min.js'></script>
+</head>
+<body>
+<input type="button" class="new" value="停止">
+<input type="button" class="old" value="开始">
+
+<script>
+var page = {
+	init:function(){
+		var sh;
+		this.bind();
+		this.sh=setInterval(this.show,1000);
+	},
+	bind:function(){
+		var self=this;
+		$(".new").on("click",function(){
+			clearInterval(self.sh);
+		})
+		$(".old").on("click",function(){
+			clearInterval(self.sh);
+			self.sh=setInterval(self.show,1000);
+		})
+	},
+	show:function(){
+		var self=this;
+		console.log("每隔一秒显示一次");
+	}
+}
+page.init();
+
+
+
+
+
+</script>
+
+
+</body>
+</html>
