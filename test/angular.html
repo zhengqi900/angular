@@ -43,7 +43,7 @@
 
 </div>
 <hr>
-<h3>例子3：</h3>
+<h3>例子2：</h3>
 <div ng-controller="btn" >
     <input type="button" ng-show="showStatus" ng-click="count=count+1" value="点击"> 
     <p ng-show="showStatus">{{ count }}</p>
@@ -51,7 +51,7 @@
     <input type="button" ng-click="toggle()" value="显示/隐藏"><br>
 </div>
 <hr>
-<h3>例子：</h3>
+<h3>例子3：</h3>
 <div ng-controller="personCtrl">
     <p>姓名为 {{ lastName | uppercase }}</p>
     <p>姓名为 {{ lastName | lowercase }}</p>
@@ -108,7 +108,7 @@
     Last Name:<br>
     <input type="text" ng-model="user.lastName">
     <br><br>
-    <button ng-click="reset()">RESET</button>
+    <button ng-click="reset()">重置</button>
   </form>
   <p>form = {{ user }}</p>
   <p>master = {{ master }}</p>
@@ -116,7 +116,7 @@
 <p ng-bind="user.lastName"></p> -->
 </div>
 <hr>
-<h3>例子:</h3>
+<h3>例子6:</h3>
 <form ng-controller="validateCtrl" name="myForm" novalidate> 
 <!-- novalidate 禁用浏览器默认验证 -->
 <p>用户名:<br>
@@ -141,6 +141,17 @@
 </p>
 
 </form>
+<hr>
+<h3>例子7：</h3>
+<div ng-controller="myNoteCtrl">
+    <h2>我的笔记</h2>
+    <p><textarea ng-model="message" cols="40" rows="10"></textarea></p>
+    <p>
+        <button ng-click="save()">保存</button>
+        <button ng-click="clear()">清除</button>
+    </p>
+    <p>可输入字数: <span ng-bind="left()"></span></p>
+</div>
 <!-- <h3>不是例子：</h3>
 <form name="myForm" ng-controller="CancelUpdateCtrl" ng-model-options="{ updateOn: 'blur' }">
     <p>With $cancelUpdate()</p>
@@ -155,7 +166,7 @@
 <script type="text/javascript">
     //创建模块
     var app = angular.module("myApp",[]);
-    // 一
+
     app.directive("runoobDirective", function() {
     return {
         // E 只限元素名使用 A 只限属性使用 C 只限类名使用 M 只限注释使用  AE没有限制   CM需要指定方式来使用  M使用后不可见需设置replace为true
@@ -180,7 +191,7 @@
          //    }
          // }
     });
-    // 二
+
     app.controller('personCtrl',function($scope){
         $scope.lastName = "aBc";
         $scope.names = [
@@ -239,6 +250,12 @@
         $scope.user = 'John Doe';
         $scope.email = 'john.doe@gmail.com';
     });
+    app.controller("myNoteCtrl", function($scope) {
+        $scope.message = "";
+        $scope.left  = function() {return 100 - $scope.message.length;};
+        $scope.clear = function() {$scope.message = "";};
+        $scope.save  = function() {alert("已保存");};
+    });    
     // app.controller("CancelUpdateCtrl",function($scope){
     //     $scope.resetWithCancel = function (e) {
     //         if (e.keyCode == 27) {
@@ -253,12 +270,5 @@
     //     };
     // }); 
 </script>
-<script type="text/javascript">
-    var myInput1 = $("input[name=myInput1]");
-    var myInput2 = $("input[name=myInput2]");
-    $("input[name=myInput1],input[name=myInput2]").on("blur",function(){   
-        console.log(myInput1.val());
-        console.log(myInput2.val());
-    });
-</script>
+
 </html>
